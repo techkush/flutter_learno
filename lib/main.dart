@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_learno/image_picker.dart';
+import 'package:flutter_learno/screens/loading.dart';
 
 // ignore: non_constant_identifier_names
 bool USE_FIRESTORE_EMULATOR = false;
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Upload(),
+      home: Loading(),
     );
   }
 }

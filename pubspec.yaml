@@ -20,7 +20,7 @@ dependencies:
   cloud_firestore: ^0.14.2
   flutter:
     sdk: flutter
-  firebase_auth: ^0.18.2
+  firebase_auth:
   image_picker: ^0.6.7+12
   firebase_storage: ^4.0.1
   google_sign_in: ^4.5.5
@@ -30,7 +30,6 @@ dependencies:
   firebase_messaging: ^7.0.3
   flutter_feather_icons: ^1.0.3
   system_settings: ^1.0.0
-  geolocator: ^6.1.3
   uuid: ^2.2.2
   cached_network_image:
   animator: ^2.0.1
