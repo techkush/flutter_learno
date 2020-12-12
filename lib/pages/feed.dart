@@ -128,6 +128,7 @@ class _FeedState extends State<Feed> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: true,
+          elevation: 0,
           iconTheme: IconThemeData(
             color: Color(0xff615DFA), //change your color here
           ),
