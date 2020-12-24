@@ -42,7 +42,6 @@ class _ModuleListState extends State<ModuleList> {
             'subjectId': field.docs[index]['subjectId'],
             'mediaUrl': field.docs[index]['mediaUrl']
           });
-          print(_moduleList);
           setState(() {
             isLoading = false;
           });
@@ -99,9 +98,11 @@ class _ModuleListState extends State<ModuleList> {
                                         MaterialPageRoute(
                                             builder: (context) => TopicScreen(
                                                   moduleId: _moduleList[index]
-                                                      ['id'], moduleName: _moduleList[index]
-                                            ['name'], mediaUrl: _moduleList[index]
-                                            ['mediaUrl'],
+                                                      ['id'],
+                                                  moduleName: _moduleList[index]
+                                                      ['name'],
+                                                  mediaUrl: _moduleList[index]
+                                                      ['mediaUrl'],
                                                 )));
                                   },
                                   child: Card(

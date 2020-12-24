@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learno/pages/subjects/lessons.dart';
 import 'package:flutter_learno/widgets/progress.dart';
 
 class TopicScreen extends StatefulWidget {
@@ -25,27 +26,31 @@ class _TopicScreenState extends State<TopicScreen> {
   }
 
   Future<void> getModuleList() async {
-    Stream<QuerySnapshot> modules = FirebaseFirestore.instance
+    setState(() {
+      isLoading = true;
+    });
+    Stream<QuerySnapshot> topics = FirebaseFirestore.instance
         .collection("app_settings")
         .doc('topics')
         .collection("topicsList")
         .snapshots();
     _topicList.clear();
-    modules.forEach((field) {
+    topics.forEach((field) {
       field.docs.asMap().forEach((index, data) {
         if (field.docs[index]['moduleId'] == widget.moduleId) {
           _topicList.add({
             'name': field.docs[index]['name'],
             'id': field.docs[index]['id'],
-            'subjectId': field.docs[index]['subjectId'],
+            'moduleId': field.docs[index]['moduleId'],
             'mediaUrl': field.docs[index]['mediaUrl']
           });
           print(_topicList);
-          setState(() {
-            isLoading = false;
-          });
+          setState(() {});
         }
       });
+    });
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -64,16 +69,14 @@ class _TopicScreenState extends State<TopicScreen> {
               iconTheme: IconThemeData(
                 color: Color(0xff615DFA), //change your color here
               ),
-              title: Text("Topics", style: TextStyle(color: Color(0xff615DFA))),
+              title: Text(widget.moduleName,
+                  style: TextStyle(color: Color(0xff615DFA))),
             ),
             body: ListView(
               children: <Widget>[
                 Stack(
                   children: <Widget>[
                     ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)),
                       child: Image(
                         image: NetworkImage(widget.mediaUrl),
                         fit: BoxFit.cover,
@@ -81,30 +84,74 @@ class _TopicScreenState extends State<TopicScreen> {
                         width: MediaQuery.of(context).size.width,
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                           widget.moduleName,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
+                    Container(
+                      height: 200,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text(
+                              widget.moduleName,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 _topicList.isEmpty
                     ? Container(
                         child: Center(
-                          child: Text('No data found.'),
+                          child: Text('No Topics.'),
                         ),
                       )
-                    : Container()
+                    : Container(
+                        child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:
+                                _topicList != null ? _topicList.length : 0,
+                            itemBuilder: (context, i) {
+                              return Column(
+                                children: <Widget>[
+                                  FlatButton(
+                                    child: ListTile(
+                                      leading: Icon(Icons.donut_small),
+                                      title: Text(
+                                        _topicList[i]['name'],
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 18),
+                                      ),
+                                      trailing: Icon(Icons.arrow_forward_ios),
+                                    ),
+                                    onPressed: () {
+                                      print(_topicList[i]['id']);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => LessonsScreen(
+                                                    lessonId: _topicList[i]
+                                                        ['id'],
+                                                topicName: _topicList[i]
+                                                ['name'],
+                                                  )));
+                                    },
+                                  ),
+                                  Divider()
+                                ],
+                              );
+                            }),
+                      )
               ],
             ));
   }
