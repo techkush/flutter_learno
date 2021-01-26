@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learno/pages/subjects/quiz.dart';
 import 'package:flutter_learno/widgets/auth_button.dart';
 
 // ignore: must_be_immutable
@@ -92,15 +93,22 @@ class _LessonsScreenState extends State<LessonsScreen> {
                                 padding: const EdgeInsets.all(20.0),
                                 child: Text(
                                   'Thank you.!',
-                                  style: TextStyle(fontSize: 30, color: Color(0xff615DFA)),
+                                  style: TextStyle(
+                                      fontSize: 30, color: Color(0xff615DFA)),
                                   textAlign: TextAlign.center,
                                 ),
-
                               ),
                               Container(
-                                width:200,
+                                width: 200,
                                 child: AuthButton(
-                                    handleFunction: null,
+                                    handleFunction: () {
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  QuizScreen(lessonId: widget.lessonId, topicName: widget.topicName,)));
+                                    },
                                     name: 'Quiz'),
                               ),
                             ],
